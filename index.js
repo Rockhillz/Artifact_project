@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require("dotenv").config()
+const artRoute = require('./routes/artworkRoute');
 
 //import routes
 const userRoutes = require("./routes/userRoutes");
@@ -19,8 +20,9 @@ mongoose
     app.use(express.json()); // parsing our json data
 
     // mounting routes on /api
-    app.use("/api", userRoutes); 
-   
+    app.use("/api", userRoutes);
+    app.use('/api', artRoute);
+
 
     app.get("/", (req, res) => {
       res.send("<h1> Hello, Welcome </h1>");
