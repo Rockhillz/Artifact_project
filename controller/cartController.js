@@ -41,9 +41,23 @@ exports.deleteFromCart = (req, res) => {
 };
 
 // 3. Get Cart Items
-router.get('/items', (req, res) => {
-    res.json(cart) });
+exports.getCartItems = (req, res) => {
+    res.json(cart) };
+
 
     
+    // 4. Checkout (Purchase Items)
+exports.checkpoutPurchaseItems = (req, res) => {
+  if (cart.length === 0) {
+    return res.status(400).json({ message: 'Your cart is empty!' });
+  }
+
+  const total = calculateTotal();
+  
+  // Clear the cart after checkout
+  cart = [];
+
+  res.json({ message: 'Purchase successful', total });
+};
 
 modules.exports = router;
