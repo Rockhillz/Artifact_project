@@ -1,11 +1,12 @@
 const express = require('express'); // import express module
 router = express.Router(); // create express router instance
    
-const { registerUser, loginUser } = require('../controller/userController');  // Import the user function from the Usercontroller
+const { registerUser, loginUser, getUserProfile } = require('../controller/userController');  // Import the user function from the Usercontroller
 
-// creating the route for user registration
-router.post('/user/register', registerUser);
-
+// Routes
+router.post('/user/register', registerUser);  // creating the route for user registration
+router.post('/user/login', loginUser);  // creating the route for user login
+router.get('/user/profile/:userId', getUserProfile);  // creating the route for user profile
 
 
 module.exports = router;
