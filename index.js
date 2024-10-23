@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 require("dotenv").config()
 
+//import routes
+const userRoutes = require("./routes/userRoutes");
+
 const dbUrl = process.env.MONGODB_URL;
 
 
@@ -13,10 +16,10 @@ mongoose
     const port = 5589; // create port
 
     //middleware
+    app.use(express.json()); // parsing our json data
 
-
-    // mounting
-    
+    // mounting routes on /api
+    app.use("/api", userRoutes); 
    
 
     app.get("/", (req, res) => {
