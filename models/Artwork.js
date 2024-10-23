@@ -9,7 +9,12 @@ const ArtworkSchema = new mongoose.Schema({
 
     imageUrl: { type: String },
 
-    category: { type: String, required: true },
+    stockQuantity: { type: Number, required: true },
+
+    category: {
+        type: String, 
+        required: true
+    },
     
     status: { type: String, enum: ['available', 'sold'], default:
     'available' },
