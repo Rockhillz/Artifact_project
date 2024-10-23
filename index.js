@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require("dotenv").config()
+const artRoute = require('./routes/artworkRoute');
 
 const dbUrl = process.env.MONGODB_URL;
 
@@ -13,11 +14,11 @@ mongoose
     const port = 5589; // create port
 
     //middleware
-
+  app.use(express.json())
 
     // mounting
-    
-   
+    app.use('/api', artRoute);
+  
 
     app.get("/", (req, res) => {
       res.send("<h1> Hello, Welcome </h1>");
