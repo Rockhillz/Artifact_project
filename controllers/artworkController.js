@@ -1,4 +1,4 @@
-const Artwork = require('../models/artwork'); //importing the model for artwork
+const Artwork = require('../models/Artwork'); //importing the model for artwork
 
 //creating new artwork
 exports.createArtwork = async (req, res) => {
@@ -51,6 +51,48 @@ exports.getCategory = async (req, res) => {
     try {
         const artwork = await Artwork.find({ category });
 
+        if (artwork.length === 0) {
+            return res.status(404).json({ success: false, message: 'Artwork not found'});
+        }
+        res.status(200).json({ success: true, data: artwork});
+    } catch (error) {
+        res.status(500).json({message: 'Error fetching artwork', error});
+    };
+}
+
+//updating artwork by id
+exports.updateArtwork = async (req, res) => {
+    const { id } = req.params;
+    //destructing the model
+    const { title, description, price, imageUrl, stockQuantity, category } = req.body;
+    try {
+        const updatedArtwork = await Artwork.findByIdAndUpdate(
+            id,
+            {
+                title,
+                description,
+                price,
+                imageUrl,
+                stockQuantity,
+                category,
+            },
+            { new: true }
+        );
+        if (!updatedArtwork) {
+            return res.status(404).json({ success: false, message: 'Artwork not found'});
+        }
+        res.status(200).json({ success: true, data: updatedArtwork});
+    } catch (error) {
+        res.status(500).json({message: 'Error updating artwork', error});
+    };
+}
+
+
+//search for Artwork by title
+exports.searchArtwork = async (req, res) => {
+    const { title } = req.params;
+    try {
+        const artwork = await Artwork.find({ title });
         if (artwork.length === 0) {
             return res.status(404).json({ success: false, message: 'Artwork not found'});
         }
