@@ -95,4 +95,18 @@ exports.filterArtwork = async (req, res) => {
     }
 }
 
+//delete artwork
+exports.deletArtwork = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedArtwork = await Artwork.findByIdAndDelete(id);
+        if (!deletedArtwork) {
+            return res.status(404).json({ success: false, message: 'Artwork not found' });
+        }
+        res.status(200).json({ success: true, message: 'Artwork deleted successfully' });
+    } catch (error) {
+        res.json({ message: error})
+    }
+};
+
 
