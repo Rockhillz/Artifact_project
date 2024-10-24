@@ -1,4 +1,4 @@
-const Artwork = require('../models/artwork'); //importing the model for artwork
+const Artwork = require('../models/Artwork'); //importing the model for artwork
 
 //creating new artwork
 exports.createArtwork = (req, res) => {
