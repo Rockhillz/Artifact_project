@@ -22,6 +22,7 @@ mongoose
     // mounting routes on /api
     app.use("/api", userRoutes);
     app.use('/api', artRoute);
+    app.use('/api', transactionRoute);
 
 
     app.get("/", (req, res) => {
