@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcryptjs');
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
@@ -9,10 +9,10 @@ exports.registerUser = async (req, res) => {
     try {
         // Check if user already exists
         const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: "User already exists" });
+        const existingUsername = await User.findOne({ username });
+        if (existingUser || existingUsername) {
+            return res.status(400).json({ message: "User  already exists" });
         }
-
 
         // Create new user
         const newUser = new User({ username, address, email, password });
@@ -23,6 +23,16 @@ exports.registerUser = async (req, res) => {
     catch (err) {
         console.error(err);
         res.status(500).json({ message: "Server error" });
+    }
+}
+
+//Getting all users
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -69,6 +79,34 @@ exports.getUserProfile = async (req, res) => {
 
         // Return user profile
         res.status(200).json({ message: `User found`, user });
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+
+//Update user profile
+exports.updateUserProfile = async (req, res) => {
+    const { userId } = req.params;
+    const { username, address, email, password } = req.body;
+
+    try {
+        // Find user by ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Update user profile
+        user.username = username;
+        user.address = address;
+        user.email = email;
+        user.password = password;
+
+        await user.save();
+        res.status(200).json({ message: "User profile updated successfully" });
     }
     catch (err) {
         console.error(err);
