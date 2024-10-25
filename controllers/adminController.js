@@ -13,7 +13,7 @@ exports.promoteUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.status(200).json({ message: 'User promoted to admin successfully' });
+        res.status(200).json({ message: 'User promoted to admin successfully', user: user });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }
