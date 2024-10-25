@@ -1,10 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require("dotenv").config()
-const artRoute = require('./routes/artworkRoute');
 
 //import routes
+const artRoute = require('./routes/artworkRoute');
 const userRoutes = require("./routes/userRoutes");
+const transactionRoute = require('./routes/transactionRoutes');
 
 const dbUrl = process.env.MONGODB_URL;
 
