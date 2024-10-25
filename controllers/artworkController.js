@@ -103,3 +103,58 @@ exports.searchArtwork = async (req, res) => {
 }
 
 
+
+//search by dateposted
+exports.searchByDate = async (req, res) => {
+    const { startDate, endDate } = req.params;
+
+    //check for missing or invalid date
+    if (!startDate || !endDate) {
+        return res.status(400).json({ success: false, message: 'Missing start or end date'});
+    }
+
+    try {
+        const artwork = await Artwork.find({ datePosted: { $gte: startDate, 
+        $lte: endDate } });
+
+        res.json(artwork)
+    } catch{
+        res.status(500).json({ success: false, message: 'Error occured while fetching artwork'});
+    }
+}
+
+//search by price range
+exports.searchByPrice = async (req, res) => {
+    const { minPrice, maxPrice, exactPrice } = req.query;
+
+    // Check for price range parameters
+    if (minPrice && maxPrice) {
+        try {
+            const artworksInRange = await Artwork.find({
+                price: {
+                    $gte: Number(minPrice),
+                    $lte: Number(maxPrice)
+                }
+            });
+            return res.json(artworksInRange);
+        } catch (error) {
+            return res.status(500).json({ error: 'An error occurred while retrieving artworks in the specified price range.' });
+        }
+    }
+
+    // Check for exactPrice to get all artworks with that exact price
+    if (exactPrice) {
+        try {
+            const artworksWithExactPrice = await Artwork.find({
+                price: Number(exactPrice)
+            });
+            return res.json(artworksWithExactPrice);
+        } catch (error) {
+            return res.status(500).json({ error: 'An error occurred while retrieving artworks with the specified exact price.' });
+        }
+    }
+
+    // If no valid parameters provided, return a 400 error
+    return res.status(400).json({ error: 'Please provide either minPrice and maxPrice for a price range search, or exactPrice for exact price search.' });
+};
+
