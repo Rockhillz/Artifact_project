@@ -1,12 +1,13 @@
-const express = require('require'); // import express
-const router = express.router(); //create express route instance
-const transactionController = require('../controllers/transactionController');
-const { protect } = require('../middlewares/authMiddleware'); //Middleware to protect routes
+const express = require('express');
+router = express.Router();
+
+const { getBuyerTransactions, getSellerTransactions } = require('../controllers/transactionController'); // Import the getBuyerTransactions function from the transactionController
+const { authMiddleware } = require('../middlewares/authMiddleware'); //Middleware to protect routes
 
 
 // Route for buyers to get their transaction history
-router.get('/buyer', transactionController.getBuyerTransactions);
-router.get('/seller', transactionController.getSellerTransactions);
+router.get('/buyer', authMiddleware, getBuyerTransactions);
+router.get('/seller', authMiddleware, getSellerTransactions);
 
 
 
